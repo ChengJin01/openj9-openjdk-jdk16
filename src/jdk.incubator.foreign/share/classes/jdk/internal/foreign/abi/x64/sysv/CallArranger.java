@@ -124,15 +124,8 @@ public class CallArranger {
     }
 
     public static MethodHandle arrangeDowncall(Addressable addr, MethodType mt, FunctionDescriptor cDesc) {
-        Bindings bindings = getBindings(mt, cDesc, false);
-
-        MethodHandle handle = new ProgrammableInvoker(CSysV, addr, bindings.callingSequence).getBoundMethodHandle();
-        handle = MethodHandles.insertArguments(handle, handle.type().parameterCount() - 1, bindings.nVectorArgs);
-
-        if (bindings.isInMemoryReturn) {
-            handle = SharedUtils.adaptDowncallForIMR(handle, cDesc);
-        }
-
+    	System.out.println("abi/x64/sysv/CallArranger.arrangeDowncall: calling OpenJ9_ProgrammableInvoker()...");
+        MethodHandle handle = ProgrammableInvoker.getBoundMethodHandle(addr, mt, cDesc);
         return handle;
     }
 

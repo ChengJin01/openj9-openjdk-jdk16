@@ -125,14 +125,8 @@ public class CallArranger {
     }
 
     public static MethodHandle arrangeDowncall(Addressable addr, MethodType mt, FunctionDescriptor cDesc) {
-        Bindings bindings = getBindings(mt, cDesc, false);
-
-        MethodHandle handle = new ProgrammableInvoker(CWindows, addr, bindings.callingSequence).getBoundMethodHandle();
-
-        if (bindings.isInMemoryReturn) {
-            handle = SharedUtils.adaptDowncallForIMR(handle, cDesc);
-        }
-
+    	System.out.println("abi/x64/windows/CallArranger.arrangeDowncall: calling OpenJ9_ProgrammableInvoker()...");
+        MethodHandle handle = ProgrammableInvoker.getBoundMethodHandle(addr, mt, cDesc);
         return handle;
     }
 
